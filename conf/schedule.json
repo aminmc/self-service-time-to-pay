@@ -1,0 +1,28 @@
+{
+  "id" : "d027a6fb-2589-45ce-aa37-a83cde239704",
+  "utr" : "2700943923402940349",
+  "createdOn" : "2016-06-07",
+  "schedule": {
+    "initialPayment" : {
+      "amount" : 100,
+      "currency" : "GBP"
+    },
+    "regularPayment": {
+      "amount": 4184.99,
+      "currency": "GBP"
+    },
+    "regularPaymentFrequency": "1M",
+    "finalPayment": {
+      "amount" : 150,
+      "currency": "GBP"
+    }
+  },
+  "totalInterestCharged" : {
+    "amount" : 1000,
+    "currency" : "GBP"
+  },
+  "totalPayable" : {
+    "amount" : 6000,
+    "currency" : "GBP"
+  }
+}
