@@ -1,0 +1,4 @@
+utr.missing=UTR is missing
+payment.frequency.format=Invalid payment frequency format
+payment.frequency.missing=Payment frequency missing
+non.negative.number=Can't be negative number

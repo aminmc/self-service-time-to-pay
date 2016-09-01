@@ -18,24 +18,28 @@ package uk.gov.hmrc.ssttp.models;
 
 
 import lombok.Data;
-import play.api.data.validation.ValidationError;
-import play.data.validation.Constraints;
+import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
 public class Calculation {
 
-    @Constraints.Required(message = "utr number required")
+    @NotEmpty(message = "utr.missing")
     private String utr;
     private Double interestRate;
     private List<Liability> liabilities;
+    @Valid
     private Amount initialPayment;
     private LocalDate initialPaymentDate;
     private LocalDate startDate;
     private LocalDate endDate;
+
+    @NotEmpty(message = "payment.frequency.missing")
+    @Pattern(regexp = "(\\d+[W,D,M])", message = "payment.frequency.format")
     private String paymentFrequency;
 
 }

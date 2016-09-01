@@ -17,6 +17,7 @@
 package uk.gov.hmrc.ssttp.controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import play.libs.Json;
@@ -60,7 +61,28 @@ public class PaymentCalculationControllerTest {
         });
     }
 
+    @Test
+    public void paymentScheduleContainsExceptions() {
 
+        running(testServer(3333, fakeApplication(new SsttpMicroserviceGlobal())), () -> {
+            //given:
+            JsonNode jsonNode = Json.parse(this.getClass().getResourceAsStream("/invalid-calculation.json"));
+
+            //when:
+            WSResponse response = WS.url("http://localhost:3333/self-service-time-to-pay/calculator")
+                    .post(jsonNode).get(10, TimeUnit.SECONDS);
+
+            //then:
+            assertThat(response.getStatus(), is(BAD_REQUEST));
+
+            //and: exceptions contains missing UTR
+            assertThat(response.asJson().size(), is(1));
+            if (response.asJson().isArray()) {
+                ArrayNode jsonNodes = (ArrayNode) response.asJson();
+                assertThat(jsonNodes.get(0), is("UTR cannot be empty"));
+            }
+        });
+    }
 
 
 }

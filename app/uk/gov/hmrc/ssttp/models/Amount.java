@@ -19,11 +19,13 @@ package uk.gov.hmrc.ssttp.models;
 
 import lombok.Data;
 
+import javax.validation.constraints.Min;
 import java.math.BigDecimal;
 
 @Data
 public class Amount {
 
+    @Min(value = 0, message = "non.negative.number")
     private BigDecimal amount;
     private String currency;
 }

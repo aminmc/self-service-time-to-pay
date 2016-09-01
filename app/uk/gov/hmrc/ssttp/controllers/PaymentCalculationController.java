@@ -17,12 +17,13 @@
 package uk.gov.hmrc.ssttp.controllers;
 
 
-import play.data.validation.Constraints;
 import play.libs.F;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
 import uk.gov.hmrc.ssttp.models.Calculation;
+import uk.gov.hmrc.ssttp.models.PaymentSchedule;
+import uk.gov.hmrc.ssttp.models.ValidationException;
 import uk.gov.hmrc.ssttp.services.CalculationService;
 import uk.gov.hmrc.ssttp.services.StubbedCalculationService;
 
@@ -31,15 +32,25 @@ import static play.libs.Json.toJson;
 
 public class PaymentCalculationController extends Controller {
 
-    private final static CalculationService calculationService = new StubbedCalculationService();
+    private final CalculationService calculationService;
+
+    public PaymentCalculationController() {
+        this.calculationService = new StubbedCalculationService();
+    }
 
     @BodyParser.Of(BodyParser.Json.class)
-    public static F.Promise<Result> generate() {
+    public F.Promise<Result> generate() {
 
         final Calculation calculation = fromJson(request().body().asJson(), Calculation.class);
 
-        return F.Promise.promise(() -> ok(
-                toJson(calculationService.generate(calculation))
-        ));
+        return F.Promise.promise(() -> {
+                    try {
+                        PaymentSchedule schedule = calculationService.generate(calculation);
+                        return ok(toJson(schedule));
+                    } catch (ValidationException e) {
+                        return badRequest(toJson(e.getExceptions()));
+                    }
+                }
+        );
     }
 }

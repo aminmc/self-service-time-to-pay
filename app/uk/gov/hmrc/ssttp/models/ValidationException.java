@@ -16,29 +16,19 @@
 
 package uk.gov.hmrc.ssttp.models;
 
-import lombok.Data;
-import play.data.format.Formats;
 
-import java.time.LocalDate;
 import java.util.List;
 
-@Data
-public class PaymentSchedule {
+public class ValidationException extends RuntimeException {
 
-    private String id;
-    private String utr;
-    private LocalDate createdOn;
-    private Schedule schedule;
-    private Amount totalInterestCharged;
-    private Amount totalPayable;
+    private List<String> exceptions;
 
+    public ValidationException(List<String> exceptions) {
+        super(exceptions.toString());
+        this.exceptions = exceptions;
+    }
 
-    @Data
-    public static class Schedule {
-        private Amount initialPayment;
-        private Amount regularPayment;
-        private String regularPaymentFrequency;
-        private Amount finalPayment;
-
+    public List<String> getExceptions() {
+        return exceptions;
     }
 }

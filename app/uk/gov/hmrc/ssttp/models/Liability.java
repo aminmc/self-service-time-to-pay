@@ -18,6 +18,7 @@ package uk.gov.hmrc.ssttp.models;
 
 
 import lombok.Data;
+import play.data.format.Formats;
 
 import java.time.LocalDate;
 

@@ -2,4 +2,4 @@
 # This file defines all application app.routes (Higher priority app.routes first)
 # ~~~~
 
-POST    /calculator                 uk.gov.hmrc.ssttp.controllers.PaymentCalculationController.generate()
+POST    /calculator                 @uk.gov.hmrc.ssttp.controllers.PaymentCalculationController.generate()

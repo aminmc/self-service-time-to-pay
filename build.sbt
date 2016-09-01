@@ -1,16 +1,20 @@
 import de.heikoseeberger.sbtheader.license.Apache2_0
-import uk.gov.hmrc.HeaderSettings
 import play.core.PlayVersion
+import uk.gov.hmrc.HeaderSettings
 
 name := "self-service-time-to-pay"
 autoScalaLibrary := false
 
-sources in (Compile, doc) <<= sources in (Compile, doc) map { _.filterNot(_.getName endsWith ".scala") }
+sources in(Compile, doc) <<= sources in(Compile, doc) map {
+  _.filterNot(_.getName endsWith ".scala")
+}
 
 testFrameworks := Seq(TestFrameworks.JUnit)
 
 // [START] Temporary solution until release of new version of sbt-auto-build with junit fix
-headers += { "java" -> Apache2_0(HeaderSettings.copyrightYear, HeaderSettings.copyrightOwner) }
+headers += {
+  "java" -> Apache2_0(HeaderSettings.copyrightYear, HeaderSettings.copyrightOwner)
+}
 
 testOptions in Test := Seq()
 testOptions in Test += Tests.Argument(TestFrameworks.Specs2, "sequential", "true", "junitxml", "console")
@@ -35,7 +39,9 @@ val compileDependencies = Seq(
   "uk.gov.hmrc" %% "play-ui" % "4.14.0",
   "org.scala-lang.modules" %% "scala-java8-compat" % "0.3.0",
   "org.projectlombok" % "lombok" % "1.16.10",
-  "com.fasterxml.jackson.datatype" % "jackson-datatype-jsr310" % "2.7.1"
+  "com.fasterxml.jackson.datatype" % "jackson-datatype-jsr310" % "2.7.1",
+  "javax.el" % "javax.el-api" % "3.0.0",
+  "org.glassfish.web" % "javax.el" % "2.2.4"
 )
 
 val testDependencies = Seq(
