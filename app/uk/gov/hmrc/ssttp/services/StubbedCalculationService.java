@@ -57,7 +57,8 @@ public class StubbedCalculationService implements CalculationService {
 
     }
 
-    public PaymentSchedule calculateInterest(Calculation calculation, PaymentSchedule paymentSchedule) {
+    //TODO: Possibly move this logic to a new class and avoid the stub
+    private PaymentSchedule calculateInterest(Calculation calculation, PaymentSchedule paymentSchedule) {
         BigDecimal amountOwed = calculation.getAmountOwed().getAmount();
         BigDecimal numberOfDays = new BigDecimal(calculation.getNumberOfDays());
         BigDecimal interestRate = new BigDecimal(calculation.getInterestRate());
