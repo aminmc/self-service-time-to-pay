@@ -25,8 +25,10 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static java.util.stream.Collectors.toList;
 
 public class CalculationValidator {
@@ -41,16 +43,15 @@ public class CalculationValidator {
 
     }
 
-    public void valdidate(Calculation calculation) {
-        Set<ConstraintViolation<Calculation>> violations = validator.validate(calculation);
+    public List<String> validate(Calculation calculation) {
 
+        Set<ConstraintViolation<Calculation>> violations = validator.validate(calculation);
         if (!violations.isEmpty()) {
-            List<String> messages = violations
+            return violations
                     .stream()
                     .map(ConstraintViolation::getMessage)
                     .collect(toList());
-
-            throw new ValidationException(messages);
         }
+        return newArrayList();
     }
 }

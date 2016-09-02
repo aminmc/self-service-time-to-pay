@@ -28,21 +28,21 @@ import java.util.List;
 @Data
 public class Calculation {
 
-    @NotEmpty(message = "utr.missing")
-    private String utr;
     private Double interestRate;
     private List<Liability> liabilities;
+
     @Valid
     private Amount initialPayment;
     private LocalDate initialPaymentDate;
     private LocalDate startDate;
     private LocalDate endDate;
+    private LocalDate currentDate;
 
     private Amount amountOwed;
     private int numberOfDays;
 
     @NotEmpty(message = "payment.frequency.missing")
-    @Pattern(regexp = "(\\d+[W,D,M])", message = "payment.frequency.format")
+    @Pattern(regexp = "(\\d+[D,W,M])", message = "payment.frequency.format")
     private String paymentFrequency;
 
 }

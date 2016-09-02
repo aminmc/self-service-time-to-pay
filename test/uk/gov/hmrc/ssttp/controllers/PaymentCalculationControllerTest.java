@@ -51,7 +51,7 @@ public class PaymentCalculationControllerTest {
             JsonNode jsonNode = Json.parse(this.getClass().getResourceAsStream("/calculation.json"));
 
             //when:
-            WSResponse response = WS.url("http://localhost:3333/self-service-time-to-pay/calculator")
+            WSResponse response = WS.url("http://localhost:3333/self-service-time-to-pay/paymentschedule")
                     .post(jsonNode).get(10, TimeUnit.SECONDS);
 
             //then:
@@ -69,7 +69,7 @@ public class PaymentCalculationControllerTest {
             JsonNode jsonNode = Json.parse(this.getClass().getResourceAsStream("/invalid-calculation.json"));
 
             //when:
-            WSResponse response = WS.url("http://localhost:3333/self-service-time-to-pay/calculator")
+            WSResponse response = WS.url("http://localhost:3333/self-service-time-to-pay/paymentschedule")
                     .post(jsonNode).get(10, TimeUnit.SECONDS);
 
             //then:
