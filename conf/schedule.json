@@ -17,10 +17,6 @@
       "currency": "GBP"
     }
   },
-  "totalInterestCharged" : {
-    "amount" : 1000,
-    "currency" : "GBP"
-  },
   "totalPayable" : {
     "amount" : 6000,
     "currency" : "GBP"

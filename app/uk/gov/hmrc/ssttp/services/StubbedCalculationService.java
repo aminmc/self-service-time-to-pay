@@ -17,6 +17,8 @@
 package uk.gov.hmrc.ssttp.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.math.BigDecimal;
+import uk.gov.hmrc.ssttp.models.Amount;
 import uk.gov.hmrc.ssttp.models.Calculation;
 import uk.gov.hmrc.ssttp.models.PaymentSchedule;
 
@@ -40,10 +42,31 @@ public class StubbedCalculationService implements CalculationService {
         PaymentSchedule paymentSchedule;
         try {
             paymentSchedule = objectMapper.readValue(this.getClass().getResourceAsStream("/schedule.json"), PaymentSchedule.class);
+            calculateInterest(calculation, paymentSchedule);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return paymentSchedule;
 
+    }
+
+    public PaymentSchedule calculateInterest(Calculation calculation, PaymentSchedule paymentSchedule) {
+        BigDecimal amountOwed = calculation.getAmountOwed().getAmount();
+        BigDecimal numberOfDays = new BigDecimal(calculation.getNumberOfDays());
+        BigDecimal interestRate = new BigDecimal(calculation.getInterestRate());
+
+        BigDecimal calculatedInterest = ((amountOwed
+                .multiply(interestRate)
+                .multiply(numberOfDays))
+                .divide(new BigDecimal(36600), BigDecimal.ROUND_FLOOR))
+                .setScale(2, BigDecimal.ROUND_FLOOR);
+
+
+        Amount interestCharged = new Amount();
+        interestCharged.setAmount(calculatedInterest);
+        interestCharged.setCurrency("GBP");
+        paymentSchedule.setTotalInterestCharged(interestCharged);
+
+        return paymentSchedule;
     }
 }

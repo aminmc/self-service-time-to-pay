@@ -1,6 +1,11 @@
 {
   "utr": "2700943923402940349",
   "interestRate": 2.4,
+  "amountOwed" : {
+    "amount" : 3070.22,
+    "currency" : "GBP"
+  },
+  "numberOfDays": 122,
   "liabilities": [
     {
       "baseAmount": {

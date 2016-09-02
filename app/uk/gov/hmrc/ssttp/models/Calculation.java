@@ -38,6 +38,9 @@ public class Calculation {
     private LocalDate startDate;
     private LocalDate endDate;
 
+    private Amount amountOwed;
+    private int numberOfDays;
+
     @NotEmpty(message = "payment.frequency.missing")
     @Pattern(regexp = "(\\d+[W,D,M])", message = "payment.frequency.format")
     private String paymentFrequency;
