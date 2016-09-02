@@ -1,5 +1,5 @@
 {
-  "utr": "",
+  "utr": "xxx-xxx-xxx",
   "interestRate": 2.4,
   "liabilities": [
     {
@@ -32,5 +32,5 @@
   "initialPaymentDate": "2017-01-31",
   "startDate": "2017-01-31",
   "endDate": "2017-01-31",
-  "paymentFrequency": "1M"
+  "paymentFrequency": "1TYF"
 }

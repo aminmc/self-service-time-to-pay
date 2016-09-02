@@ -62,7 +62,7 @@ public class PaymentCalculationControllerTest {
     }
 
     @Test
-    public void paymentScheduleContainsExceptions() {
+    public void badRequestThrownInvalidCalculation() {
 
         running(testServer(3333, fakeApplication(new SsttpMicroserviceGlobal())), () -> {
             //given:
@@ -75,12 +75,8 @@ public class PaymentCalculationControllerTest {
             //then:
             assertThat(response.getStatus(), is(BAD_REQUEST));
 
-            //and: exceptions contains missing UTR
+            //and: exception contains invalid frequency format
             assertThat(response.asJson().size(), is(1));
-            if (response.asJson().isArray()) {
-                ArrayNode jsonNodes = (ArrayNode) response.asJson();
-                assertThat(jsonNodes.get(0), is("UTR cannot be empty"));
-            }
         });
     }
 
