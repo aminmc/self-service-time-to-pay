@@ -19,8 +19,11 @@ package uk.gov.hmrc.ssttp.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import uk.gov.hmrc.ssttp.models.Calculation;
 import uk.gov.hmrc.ssttp.models.PaymentSchedule;
+import uk.gov.hmrc.ssttp.models.ValidationException;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 
 public class StubbedCalculationService implements CalculationService {
 
@@ -35,7 +38,11 @@ public class StubbedCalculationService implements CalculationService {
 
     @Override
     public PaymentSchedule generate(Calculation calculation) {
-        validator.valdidate(calculation);
+        List<String> messages = validator.validate(calculation);
+
+        if (!messages.isEmpty()) {
+            throw new ValidationException(messages);
+        }
 
         PaymentSchedule paymentSchedule;
         try {
