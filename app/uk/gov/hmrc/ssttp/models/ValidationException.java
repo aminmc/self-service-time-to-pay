@@ -18,17 +18,18 @@ package uk.gov.hmrc.ssttp.models;
 
 
 import java.util.List;
+import java.util.Map;
 
 public class ValidationException extends RuntimeException {
 
-    private List<String> exceptions;
+    private Map<String, List<String>> exceptions;
 
-    public ValidationException(List<String> exceptions) {
+    public ValidationException(Map<String, List<String>> exceptions) {
         super(exceptions.toString());
         this.exceptions = exceptions;
     }
 
-    public List<String> getExceptions() {
+    public Map<String, List<String>> getExceptions() {
         return exceptions;
     }
 }

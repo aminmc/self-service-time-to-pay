@@ -31,13 +31,13 @@ public class Calculation {
     private Double interestRate;
     private List<Liability> liabilities;
 
-    @Valid
     private Amount initialPayment;
     private LocalDate initialPaymentDate;
     private LocalDate startDate;
     private LocalDate endDate;
     private LocalDate currentDate;
 
+    @Valid
     private Amount amountOwed;
     private int numberOfDays;
 

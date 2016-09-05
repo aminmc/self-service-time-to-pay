@@ -14,22 +14,24 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ssttp.models;
+package uk.gov.hmrc.ssttp.controllers;
+
+import play.libs.F;
+import play.mvc.Http;
+import play.mvc.Result;
+import uk.gov.hmrc.ssttp.models.ValidationException;
+
+import static play.libs.Json.toJson;
 
 
-import lombok.Data;
-import play.data.format.Formats;
+public class ValidationAction extends play.mvc.Action.Simple {
 
-import java.time.LocalDate;
-import java.time.Year;
-
-@Data
-public class Liability {
-
-    private Amount amount;
-    private LocalDate dueDate;
-    private String originCode;
-    private LocalDate relevantDate;
-    private Amount linkingCharge;
-    private Year taxYear;
+    @Override
+    public F.Promise<Result> call(Http.Context ctx) throws Throwable {
+        try {
+            return delegate.call(ctx);
+        } catch (ValidationException e) {
+            return F.Promise.promise(() -> badRequest(toJson(e.getExceptions())));
+        }
+    }
 }

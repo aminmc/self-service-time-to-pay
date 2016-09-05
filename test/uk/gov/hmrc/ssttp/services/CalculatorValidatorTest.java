@@ -22,6 +22,7 @@ import play.i18n.Messages;
 import uk.gov.hmrc.ssttp.models.Calculation;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -42,10 +43,10 @@ public class CalculatorValidatorTest {
         calculation.setPaymentFrequency("1X");
 
         //when:
-        List<String> messages = calculationValidator.validate(calculation);
+        Map<String,List<String> > messages = calculationValidator.validate(calculation);
 
         //then:
         assertThat(messages.size(), is(1));
-        assertThat(messages.get(0), is(Messages.get("payment.frequency.format")));
+        assertThat(messages.get("paymentFrequency").get(0), is(Messages.get("payment.frequency.format")));
     }
 }

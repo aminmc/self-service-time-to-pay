@@ -25,6 +25,7 @@ import uk.gov.hmrc.ssttp.models.ValidationException;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class StubbedCalculationService implements CalculationService {
@@ -40,10 +41,9 @@ public class StubbedCalculationService implements CalculationService {
 
     @Override
     public PaymentSchedule generate(Calculation calculation) {
-        List<String> messages = validator.validate(calculation);
-
-        if (!messages.isEmpty()) {
-            throw new ValidationException(messages);
+        Map<String, List<String>> validationErrors = validator.validate(calculation);
+        if (!validationErrors.isEmpty()) {
+            throw new ValidationException(validationErrors);
         }
 
         PaymentSchedule paymentSchedule;

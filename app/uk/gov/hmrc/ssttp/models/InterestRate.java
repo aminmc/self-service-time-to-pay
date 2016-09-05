@@ -16,20 +16,13 @@
 
 package uk.gov.hmrc.ssttp.models;
 
-
 import lombok.Data;
-import play.data.format.Formats;
 
 import java.time.LocalDate;
-import java.time.Year;
 
 @Data
-public class Liability {
+public class InterestRate {
 
-    private Amount amount;
-    private LocalDate dueDate;
-    private String originCode;
-    private LocalDate relevantDate;
-    private Amount linkingCharge;
-    private Year taxYear;
+    private Double rate;
+    private LocalDate date;
 }

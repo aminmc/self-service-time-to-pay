@@ -17,19 +17,19 @@
 package uk.gov.hmrc.ssttp.services;
 
 
+import play.libs.F;
 import uk.gov.hmrc.ssttp.config.PlayMessageInterpolator;
 import uk.gov.hmrc.ssttp.models.Calculation;
-import uk.gov.hmrc.ssttp.models.ValidationException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.Set;
 
-import static com.google.common.collect.Lists.newArrayList;
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
 
 public class CalculationValidator {
 
@@ -43,15 +43,16 @@ public class CalculationValidator {
 
     }
 
-    public List<String> validate(Calculation calculation) {
-
+    public Map<String, List<String>> validate(Calculation calculation) {
         Set<ConstraintViolation<Calculation>> violations = validator.validate(calculation);
+
         if (!violations.isEmpty()) {
             return violations
                     .stream()
-                    .map(ConstraintViolation::getMessage)
-                    .collect(toList());
+                    .map(v -> new F.Tuple<>(v.getPropertyPath().toString(), v.getMessage()))
+                    .collect(groupingBy(t -> t._1, mapping(t -> t._2, toList())));
         }
-        return newArrayList();
+
+        return new HashMap<>();
     }
 }

@@ -7,26 +7,14 @@
   "numberOfDays": 122,
   "liabilities": [
     {
-      "baseAmount": {
-        "amount": 2000,
+      "originCode" : "IN1",
+      "dueDate" : "2016-01-31",
+      "amount":
+      {
+        "amount": 2175.66,
         "currency": "GBP"
       },
-      "dueDate": "2016-01-31",
-      "accruedInterest": {
-        "currency": "GBP",
-        "amount": 100
-      }
-    },
-    {
-      "baseAmount": {
-        "amount": 219,
-        "currency": "GBP"
-      },
-      "dueDate": "2016-01-31",
-      "accruedInterest": {
-        "currency": "GBP",
-        "amount": 150
-      }
+      "taxYear": 2015
     }
   ],
   "initialPayment": {
