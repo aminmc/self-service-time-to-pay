@@ -17,6 +17,7 @@
 package uk.gov.hmrc.ssttp.controllers;
 
 
+import play.libs.F;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -39,12 +40,14 @@ public class PaymentCalculationController extends Controller {
 
     @BodyParser.Of(BodyParser.Json.class)
     @With(ValidationAction.class)
-    public Result generate() {
-
+    public F.Promise<Result> generate() {
         final Calculation calculation = fromJson(request().body().asJson(), Calculation.class);
 
-        PaymentSchedule schedule = calculationService.generate(calculation);
+        return F.Promise.promise(() -> {
+            PaymentSchedule schedule = calculationService.generate(calculation);
+            return ok(toJson(schedule));
+        });
 
-        return ok(toJson(schedule));
+
     }
 }
