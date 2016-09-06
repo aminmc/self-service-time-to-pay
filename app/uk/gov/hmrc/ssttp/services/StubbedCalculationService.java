@@ -17,16 +17,20 @@
 package uk.gov.hmrc.ssttp.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.math.BigDecimal;
+
 import uk.gov.hmrc.ssttp.models.Amount;
 import uk.gov.hmrc.ssttp.models.Calculation;
 import uk.gov.hmrc.ssttp.models.PaymentSchedule;
 import uk.gov.hmrc.ssttp.models.ValidationException;
 
-import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+
+import static java.time.temporal.ChronoUnit.DAYS;
+import static java.util.UUID.randomUUID;
 
 public class StubbedCalculationService implements CalculationService {
 
@@ -45,14 +49,10 @@ public class StubbedCalculationService implements CalculationService {
         if (!validationErrors.isEmpty()) {
             throw new ValidationException(validationErrors);
         }
-
-        PaymentSchedule paymentSchedule;
-        try {
-            paymentSchedule = objectMapper.readValue(this.getClass().getResourceAsStream("/schedule.json"), PaymentSchedule.class);
-            calculateInterest(calculation, paymentSchedule);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        PaymentSchedule paymentSchedule = new PaymentSchedule();
+        paymentSchedule.setId(randomUUID().toString());
+        paymentSchedule.setCreatedOn(LocalDate.now());
+        calculateInterest(calculation, paymentSchedule);
         return paymentSchedule;
 
     }
@@ -60,8 +60,8 @@ public class StubbedCalculationService implements CalculationService {
     //TODO: Possibly move this logic to a new class and avoid the stub
     private PaymentSchedule calculateInterest(Calculation calculation, PaymentSchedule paymentSchedule) {
         BigDecimal amountOwed = calculation.getAmountOwed().getAmount();
-        BigDecimal numberOfDays = new BigDecimal(calculation.getNumberOfDays());
-        BigDecimal interestRate = new BigDecimal(calculation.getInterestRate());
+        BigDecimal numberOfDays = calculateNumberOfDays(calculation);
+        BigDecimal interestRate = new BigDecimal(calculation.getInterestRate() == null ? 3.5 : calculation.getInterestRate());
 
         BigDecimal calculatedInterest = ((amountOwed
                 .multiply(interestRate)
@@ -76,5 +76,10 @@ public class StubbedCalculationService implements CalculationService {
         paymentSchedule.setTotalInterestCharged(interestCharged);
 
         return paymentSchedule;
+    }
+
+    private BigDecimal calculateNumberOfDays(Calculation calculation) {
+        LocalDate startDate = LocalDate.now();
+        return new BigDecimal(DAYS.between(startDate, calculation.getWhenDue()));
     }
 }

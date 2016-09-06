@@ -34,15 +34,15 @@ public class Calculation {
     private Amount initialPayment;
     private LocalDate initialPaymentDate;
     private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDate whenDue;
     private LocalDate currentDate;
 
-    @Valid
+    //@Valid
     private Amount amountOwed;
     private int numberOfDays;
 
-    @NotEmpty(message = "payment.frequency.missing")
-    @Pattern(regexp = "(\\d+[D,W,M])", message = "payment.frequency.format")
+   // @NotEmpty(message = "payment.frequency.missing")
+    //@Pattern(regexp = "(\\d+[D,W,M])", message = "payment.frequency.format")
     private String paymentFrequency;
 
 }
